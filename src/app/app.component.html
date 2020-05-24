@@ -1,0 +1,13 @@
+<kendo-grid [data]="gridData" [height]="600" [pageable]="false" [sortable]="true" >
+<kendo-grid-column field="title" title="Title" ></kendo-grid-column>
+<kendo-grid-column field="url" title="Url"  >
+  <ng-template kendoGridCellTemplate let-dataItem>
+                     <span><a href="{{dataItem.url}}"><i class="material-icons">link</i></a></span>
+                  
+                </ng-template>
+</kendo-grid-column>
+<kendo-grid-column field="published_date"  title="Published Date" autoSize="true"> 
+
+</kendo-grid-column>
+</kendo-grid>
+

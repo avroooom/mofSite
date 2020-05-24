@@ -5,11 +5,10 @@ import { toODataString } from '@progress/kendo-data-query';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-export abstract class NorthwindService extends BehaviorSubject<GridDataResult> {
+export abstract class myService extends BehaviorSubject<GridDataResult> {
     public loading: boolean;
 
-    private BASE_URL = 'https://odatasampleservices.azurewebsites.net/V4/Northwind/Northwind.svc/';
-
+    
     constructor(
         private http: HttpClient,
         protected tableName: string
@@ -27,7 +26,7 @@ export abstract class NorthwindService extends BehaviorSubject<GridDataResult> {
         this.loading = true;
 
         return this.http
-            .get(`https://api.nytimes.com/svc/topstories/v2/home.json?api-key=iBF1wT74GchHz8TMkvbk8dTnT3lRjOQE`)
+            .get(`https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=iBF1wT74GchHz8TMkvbk8dTnT3lRjOQE`)
             .pipe(
                 map(response => (<GridDataResult>{
                     data: response['results'],
@@ -39,36 +38,9 @@ export abstract class NorthwindService extends BehaviorSubject<GridDataResult> {
     }
 }
 
-@Injectable()
-export class ProductsService extends NorthwindService {
-    constructor(http: HttpClient) { super(http, 'Products'); }
-
-    public queryForCategory({ CategoryID }: { CategoryID: number }, state?: any): void {
-        this.query(Object.assign({}, state, {
-            filter: {
-                filters: [{
-                    field: 'CategoryID', operator: 'eq', value: CategoryID
-                }],
-                logic: 'and'
-            }
-        }));
-    }
-
-    public queryForProductName(ProductName: string, state?: any): void {
-        this.query(Object.assign({}, state, {
-            filter: {
-                filters: [{
-                    field: 'ProductName', operator: 'contains', value: ProductName
-                }],
-                logic: 'and'
-            }
-        }));
-    }
-
-}
 
 @Injectable()
-export class CategoriesService extends NorthwindService {
+export class CategoriesService extends myService  {
     constructor(http: HttpClient) { super(http, 'Categories'); }
 
     queryAll(st?: any): Observable<GridDataResult> {
